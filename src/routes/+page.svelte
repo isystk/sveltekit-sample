@@ -1,2 +1,21 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+  import { screenType } from "../store/common";
+  import List from "../pages/List.svelte";
+  import Detail from "../pages/Detail.svelte";
+</script>
+
+<main>
+  <h1>メモアプリ</h1>
+  {#if $screenType === 0}
+    <List />
+  {:else if $screenType === 1}
+    <Detail />
+  {/if}
+</main>
+
+<style lang="scss">
+  main {
+    width: 544px;
+    padding: 20px;
+  }
+</style>
