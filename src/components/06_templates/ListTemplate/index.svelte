@@ -4,7 +4,7 @@
   import DeleteMemoModal from "../../04_organisms/DeleteMemoModal/index.svelte";
   import { memoList, showDeleteMemoModalFlg } from "../../../store/common";
   import { onMount } from "svelte";
-
+  
   let showRegistMemoModalFlg: boolean = false; // メモ登録モーダルの表示フラグ
 
   onMount(() => {
@@ -15,8 +15,8 @@
    * ローカルストレージからメモ一覧を取得
    */
   function loadMemoList() {
-    const storageMemoList: any[] =
-      JSON.parse(localStorage.getItem("memoList")) || [];
+    const storageMemoList: {} =
+      JSON.parse(localStorage.getItem("memoList")) || {};
 
     memoList.set(storageMemoList);
   }

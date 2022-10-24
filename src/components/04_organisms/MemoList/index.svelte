@@ -3,7 +3,7 @@
     screenType,
     memoList,
     showDeleteMemoModalFlg,
-    selectIndex,
+    selectId,
   } from "../../../store/common";
 
   /**
@@ -11,8 +11,8 @@
    *
    * @param {number} index 選択したメモのインデックス
    */
-  function showDeleteMemoModal(index: number) {
-    selectIndex.set(index);
+  function showDeleteMemoModal(id: string) {
+    selectId.set(id);
     showDeleteMemoModalFlg.set(true);
   }
 
@@ -21,23 +21,21 @@
    *
    * @param {number} index 選択したメモのインデックス
    */
-  function showMemoDetailPage(index: number) {
-    selectIndex.set(index);
+  function showMemoDetailPage(id: string) {
+    selectId.set(id);
     screenType.set(1);
   }
 </script>
 
-{#if $memoList.length > 0}
+{#if Object.keys($memoList).length > 0}
   <ul class="memo-list">
-    {#each $memoList as { title, date }, i}
-      <li on:click={() => showMemoDetailPage(i)}>
-        <p class="title">{title}</p>
-        <p class="date">登録日：{date}</p>
-        <span
-          class="delete"
-          on:click|stopPropagation={() => showDeleteMemoModal(i)}>×</span
-        >
-      </li>
+    {#each Object.entries($memoList) as [id, {title, date}], i}
+        <li on:click={() => showMemoDetailPage(id)}>
+            <p class="id">{id}</p>
+            <p class="title">{title}</p>
+            <p class="date">登録日：{date}</p>
+            <span class="delete" on:click|stopPropagation={() => showDeleteMemoModal(id)}>×</span>
+        </li>
     {/each}
   </ul>
 {:else}

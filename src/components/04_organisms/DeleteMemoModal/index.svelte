@@ -2,22 +2,19 @@
   import {
     memoList,
     showDeleteMemoModalFlg,
-    selectIndex,
+    selectId,
   } from "../../../store/common";
-
-  let memoTitle = $memoList[$selectIndex].title;
+  let memoTitle = $memoList[$selectId].title;
 
   /**
    * メモを削除
    */
   function deleteMemo() {
     const localStorageMemoList: string = localStorage.getItem("memoList");
-    const newMemoList: any[] = localStorageMemoList
+    const newMemoList: {} = localStorageMemoList
       ? JSON.parse(localStorageMemoList)
-      : [];
-
-    newMemoList.splice($selectIndex, 1);
-
+      : {};
+    delete newMemoList[$selectId]
     localStorage.setItem("memoList", JSON.stringify(newMemoList));
 
     memoList.set(newMemoList);

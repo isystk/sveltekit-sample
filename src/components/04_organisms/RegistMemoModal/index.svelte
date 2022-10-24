@@ -5,24 +5,36 @@
   const dispatch = createEventDispatcher();
   let memoTitle: string = "";
   let memoContext: string = "";
+  
+  const getRandomString = (n: number): string => {
+    const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    return Array.from(crypto.getRandomValues(new Uint32Array(n)))
+      .map((v) => S[v % S.length])
+      .join('');
+  };
 
   /**
    * メモを登録
    */
   function registMemo() {
     const localStorageMemoList: string = localStorage.getItem("memoList");
-    const newMemoList: any[] = localStorageMemoList
+    const beforeMemoList: {} = localStorageMemoList
       ? JSON.parse(localStorageMemoList)
-      : [];
+      : {};
     const now: Date = new Date();
 
-    newMemoList.push({
-      title: memoTitle,
-      context: memoContext,
-      date: `${String(now.getFullYear())}年${String(
+    const id = getRandomString(16);
+    const newMemoList = {...beforeMemoList, 
+      [id]: {
+        id,
+        title: memoTitle,
+        context: memoContext,
+        date: `${String(now.getFullYear())}年${String(
         now.getMonth() + 1
-      )}月${String(now.getDate())}日`,
-    });
+        )}月${String(now.getDate())}日`,
+      }
+    }
 
     localStorage.setItem("memoList", JSON.stringify(newMemoList));
 

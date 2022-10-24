@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { screenType, memoList, selectIndex } from "../../../store/common";
+  import { screenType, memoList, selectId } from "../../../store/common";
 
-  let memoTitle: string = $memoList[$selectIndex].title;
-  let memoContext: string = $memoList[$selectIndex].context;
+  let memoTitle: string = $memoList[$selectId].title;
+  let memoContext: string = $memoList[$selectId].context;
 
   /**
    * メモ一覧画面に戻る
@@ -16,12 +16,12 @@
    */
   function updateMemo() {
     const localStorageMemoList: string = localStorage.getItem("memoList");
-    const newMemoList: any[] = localStorageMemoList
+    const newMemoList: {} = localStorageMemoList
       ? JSON.parse(localStorageMemoList)
-      : [];
+      : {};
 
-    newMemoList[$selectIndex].title = memoTitle;
-    newMemoList[$selectIndex].context = memoContext;
+    newMemoList[$selectId].title = memoTitle;
+    newMemoList[$selectId].context = memoContext;
 
     localStorage.setItem("memoList", JSON.stringify(newMemoList));
 
