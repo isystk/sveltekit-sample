@@ -1,6 +1,5 @@
 <script lang="ts">
   import {
-    screenType,
     memoList,
     showDeleteMemoModalFlg,
     selectId,
@@ -16,25 +15,18 @@
     showDeleteMemoModalFlg.set(true);
   }
 
-  /**
-   * 詳細ページを非表示
-   *
-   * @param {number} index 選択したメモのインデックス
-   */
-  function showMemoDetailPage(id: string) {
-    selectId.set(id);
-    screenType.set(1);
-  }
 </script>
 
 {#if Object.keys($memoList).length > 0}
   <ul class="memo-list">
     {#each Object.entries($memoList) as [id, {title, date}], i}
-        <li on:click={() => showMemoDetailPage(id)}>
-            <p class="id">{id}</p>
-            <p class="title">{title}</p>
-            <p class="date">登録日：{date}</p>
-            <span class="delete" on:click|stopPropagation={() => showDeleteMemoModal(id)}>×</span>
+        <li>
+            <a href="/{id}">
+                <p class="id">{id}</p>
+                <p class="title">{title}</p>
+                <p class="date">登録日：{date}</p>
+                <span class="delete" on:click|stopPropagation={() => showDeleteMemoModal(id)}>×</span>
+            </a>
         </li>
     {/each}
   </ul>

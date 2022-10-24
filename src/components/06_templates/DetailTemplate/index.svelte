@@ -1,14 +1,48 @@
+<div class="detail">
+  <p class="link-text" on:click={() => backListPage()}>一覧画面に戻る</p>
+  <div class="contents">
+    <label class="input-title">
+      <p>タイトル</p>
+      <input bind:value={memoTitle} type="text" />
+    </label>
+    <label class="input-context">
+      <p>内容</p>
+      <textarea bind:value={memoContext} />
+    </label>
+  </div>
+  <div class="buttons">
+    <button class="btn" on:click={updateMemo}>更新</button>
+  </div>
+</div>
+
 <script lang="ts">
-  import { screenType, memoList, selectId } from "../../../store/common";
+  import { goto } from '$app/navigation';
+  import { memoList, selectId } from "../../../store/common";
 
   let memoTitle: string = $memoList[$selectId].title;
   let memoContext: string = $memoList[$selectId].context;
+  
+  import { onMount } from "svelte";
+
+  /**
+   * ローカルストレージからメモ一覧を取得
+   */
+  function loadMemoList() {
+    const storageMemoList: {} =
+            JSON.parse(localStorage.getItem("memoList")) || {};
+
+    memoList.set(storageMemoList);
+  }
+
+  onMount(() => {
+    loadMemoList(); // ローカルストレージからメモ一覧を取得
+  });
 
   /**
    * メモ一覧画面に戻る
    */
   function backListPage() {
-    screenType.set(0);
+    goto("/")
   }
 
   /**
@@ -29,23 +63,6 @@
     backListPage(); // メモ一覧画面に戻る
   }
 </script>
-
-<div class="detail">
-  <p class="link-text" on:click={() => backListPage()}>一覧画面に戻る</p>
-  <div class="contents">
-    <label class="input-title">
-      <p>タイトル</p>
-      <input bind:value={memoTitle} type="text" />
-    </label>
-    <label class="input-context">
-      <p>内容</p>
-      <textarea bind:value={memoContext} />
-    </label>
-  </div>
-  <div class="buttons">
-    <button class="btn" on:click={updateMemo}>更新</button>
-  </div>
-</div>
 
 <style lang="scss">
   .detail {
