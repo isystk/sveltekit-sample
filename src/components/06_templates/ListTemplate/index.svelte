@@ -1,8 +1,8 @@
 <script lang="ts">
-  import MemoListComponent from "../components/MemoList.svelte";
-  import RegistMemoModal from "../components/modal/RegistMemoModal.svelte";
-  import DeleteMemoModal from "../components/modal/DeleteMemoModal.svelte";
-  import { memoList, showDeleteMemoModalFlg } from "../store/common";
+  import MemoListComponent from "../../04_organisms/MemoList/index.svelte";
+  import RegistMemoModal from "../../04_organisms/RegistMemoModal/index.svelte";
+  import DeleteMemoModal from "../../04_organisms/DeleteMemoModal/index.svelte";
+  import { memoList, showDeleteMemoModalFlg } from "../../../store/common";
   import { onMount } from "svelte";
 
   let showRegistMemoModalFlg: boolean = false; // メモ登録モーダルの表示フラグ

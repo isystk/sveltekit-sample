@@ -1,22 +1,28 @@
 <script lang="ts">
-  import {
-    memoList,
-    showDeleteMemoModalFlg,
-    selectIndex,
-  } from "../../store/common";
+  import { createEventDispatcher } from "svelte";
+  import { memoList } from "../../../store/common";
 
-  let memoTitle = $memoList[$selectIndex].title;
+  const dispatch = createEventDispatcher();
+  let memoTitle: string = "";
+  let memoContext: string = "";
 
   /**
-   * メモを削除
+   * メモを登録
    */
-  function deleteMemo() {
+  function registMemo() {
     const localStorageMemoList: string = localStorage.getItem("memoList");
     const newMemoList: any[] = localStorageMemoList
       ? JSON.parse(localStorageMemoList)
       : [];
+    const now: Date = new Date();
 
-    newMemoList.splice($selectIndex, 1);
+    newMemoList.push({
+      title: memoTitle,
+      context: memoContext,
+      date: `${String(now.getFullYear())}年${String(
+        now.getMonth() + 1
+      )}月${String(now.getDate())}日`,
+    });
 
     localStorage.setItem("memoList", JSON.stringify(newMemoList));
 
@@ -28,7 +34,7 @@
    * 本モーダルを閉じる
    */
   function closeModal() {
-    showDeleteMemoModalFlg.set(false);
+    dispatch("close");
   }
 </script>
 
@@ -36,13 +42,20 @@
   <div class="modal-background">
     <div class="modal-contents">
       <span class="close" on:click={closeModal}>×</span>
-      <h2 class="title">メモを削除</h2>
+      <h2 class="title">メモを登録</h2>
       <div class="contents">
-        <p>『{memoTitle}』のメモを削除してもよろしいですか</p>
+        <label class="input-title">
+          <p>タイトル</p>
+          <input bind:value={memoTitle} type="text" />
+        </label>
+        <label class="input-context">
+          <p>内容</p>
+          <textarea bind:value={memoContext} />
+        </label>
       </div>
       <div class="buttons">
         <button class="btn" on:click={closeModal}>キャンセル</button>
-        <button class="btn" on:click={deleteMemo}>削除</button>
+        <button class="btn" on:click={registMemo}>登録</button>
       </div>
     </div>
   </div>
@@ -66,7 +79,7 @@
       left: 0;
       right: 0;
       margin: auto;
-      width: 400px;
+      width: 500px;
       padding: 20px;
       background: #ffffff;
       border-radius: 10px;
@@ -86,6 +99,24 @@
       }
       .contents {
         margin-top: 24px;
+        label {
+          display: block;
+          &:not(:first-child) {
+            margin-top: 12px;
+          }
+          input,
+          textarea {
+            width: 100%;
+            margin-top: 8px;
+            font-size: 20px;
+          }
+          input {
+            height: 32px;
+          }
+          textarea {
+            height: 150px;
+          }
+        }
       }
       .buttons {
         display: flex;
@@ -94,6 +125,7 @@
         margin-top: 24px;
         .btn {
           width: 120px;
+          height: 32px;
           &:not(:first-child) {
             margin-left: 12px;
           }

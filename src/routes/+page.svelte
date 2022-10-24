@@ -1,7 +1,7 @@
 <script lang="ts">
   import { screenType } from "../store/common";
-  import List from "../pages/List.svelte";
-  import Detail from "../pages/Detail.svelte";
+  import List from "../components/06_templates/ListTemplate/index.svelte";
+  import Detail from "../components/06_templates/DetailTemplate/index.svelte";
 </script>
 
 <main>

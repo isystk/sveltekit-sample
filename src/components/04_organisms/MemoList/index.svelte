@@ -4,7 +4,7 @@
     memoList,
     showDeleteMemoModalFlg,
     selectIndex,
-  } from "../store/common";
+  } from "../../../store/common";
 
   /**
    * メモ削除モーダルを表示

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { screenType, memoList, selectIndex } from "../store/common";
+  import { screenType, memoList, selectIndex } from "../../../store/common";
 
   let memoTitle: string = $memoList[$selectIndex].title;
   let memoContext: string = $memoList[$selectIndex].context;
