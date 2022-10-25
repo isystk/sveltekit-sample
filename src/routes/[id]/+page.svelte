@@ -3,7 +3,7 @@
     <Detail />
 </main>
 
-<script>
+<script lang="ts">
 import Detail from "../../components/06_templates/DetailTemplate/index.svelte";
 import {selectId} from "../../store/common";
 import { page } from '$app/stores';

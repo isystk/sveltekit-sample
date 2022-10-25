@@ -1,25 +1,51 @@
-<script lang="ts">
-  import MemoListComponent from "../../04_organisms/MemoList/index.svelte";
-  import RegistMemoModal from "../../04_organisms/RegistMemoModal/index.svelte";
-  import DeleteMemoModal from "../../04_organisms/DeleteMemoModal/index.svelte";
-  import { memoList, showDeleteMemoModalFlg } from "../../../store/common";
-  import { onMount } from "svelte";
-  
-  let showRegistMemoModalFlg: boolean = false; // メモ登録モーダルの表示フラグ
+<div class="home">
+    <div class="contents">
+        <button type="button" class="btn" on:click={showRegistMemoModal}
+        >メモを登録</button
+        >
+        <div class="memo-list-area">
+            {#await load()}
+                Loading...
+            {:then data}
+                <MemoListComponent />
+            {:catch error}
+                <p style="color: red">{error.message}</p>
+            {/await}
+        </div>
+    </div>
+</div>
 
-  onMount(() => {
-    loadMemoList(); // ローカルストレージからメモ一覧を取得
-  });
+{#if showRegistMemoModalFlg}
+    <RegistMemoModal on:close={closeRegistMemoModal} />
+{/if}
+{#if $showDeleteMemoModalFlg}
+    <DeleteMemoModal />
+{/if}
+
+<script lang="ts" context="module">
+  import { memoList } from "../../../store/common";
 
   /**
    * ローカルストレージからメモ一覧を取得
    */
-  function loadMemoList() {
+  async function loadMemoList() {
     const storageMemoList: {} =
       JSON.parse(localStorage.getItem("memoList")) || {};
-
     memoList.set(storageMemoList);
   }
+
+  export async function load() {
+    await loadMemoList(); // ローカルストレージからメモ一覧を取得
+  }
+</script>
+
+<script lang="ts">
+  import MemoListComponent from "../../04_organisms/MemoList/index.svelte";
+  import RegistMemoModal from "../../04_organisms/RegistMemoModal/index.svelte";
+  import DeleteMemoModal from "../../04_organisms/DeleteMemoModal/index.svelte";
+  import { showDeleteMemoModalFlg } from "../../../store/common";
+
+  let showRegistMemoModalFlg: boolean = false; // メモ登録モーダルの表示フラグ
 
   /**
    * メモ登録モーダルを表示
@@ -35,24 +61,6 @@
     showRegistMemoModalFlg = false;
   }
 </script>
-
-<div class="home">
-    <div class="contents">
-        <button type="button" class="btn" on:click={showRegistMemoModal}
-        >メモを登録</button
-        >
-        <div class="memo-list-area">
-            <MemoListComponent />
-        </div>
-    </div>
-</div>
-
-{#if showRegistMemoModalFlg}
-    <RegistMemoModal on:close={closeRegistMemoModal} />
-{/if}
-{#if $showDeleteMemoModalFlg}
-    <DeleteMemoModal />
-{/if}
 
 <style lang="scss">
   .home {

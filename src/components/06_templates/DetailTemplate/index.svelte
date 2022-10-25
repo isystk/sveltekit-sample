@@ -17,38 +17,39 @@
 
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { memoList, selectId } from "../../../store/common";
-
-  let memoTitle: string = $memoList[$selectId].title;
-  let memoContext: string = $memoList[$selectId].context;
-  
   import { onMount } from "svelte";
+  import { memoList, selectId } from "../../../store/common";
+  
+  // data
+  let memoTitle = '' 
+  let memoContext = ''
 
-  /**
-   * ローカルストレージからメモ一覧を取得
-   */
-  function loadMemoList() {
-    const storageMemoList: {} =
-            JSON.parse(localStorage.getItem("memoList")) || {};
-
-    memoList.set(storageMemoList);
-  }
-
+  // init
   onMount(() => {
     loadMemoList(); // ローカルストレージからメモ一覧を取得
   });
 
-  /**
-   * メモ一覧画面に戻る
-   */
-  function backListPage() {
+  // compute
+  $: {
+
+  }
+
+  // ローカルストレージからメモ一覧を取得
+  const loadMemoList = () => {
+    const storageMemoList: {} =
+            JSON.parse(localStorage.getItem("memoList")) || {};
+    memoList.set(storageMemoList);
+    memoTitle =  $memoList[$selectId].title;
+    memoContext = $memoList[$selectId].context;
+  }
+  
+  // メモ一覧画面に戻る
+  const backListPage = () => {
     goto("/")
   }
 
-  /**
-   * メモを更新する
-   */
-  function updateMemo() {
+  // メモを更新する
+  const updateMemo = () => {
     const localStorageMemoList: string = localStorage.getItem("memoList");
     const newMemoList: {} = localStorageMemoList
       ? JSON.parse(localStorageMemoList)
